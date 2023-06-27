@@ -13,7 +13,7 @@
         <td>{{ index + 1 }}</td>
         <td>{{ book.name }}</td>
         <td>
-          <button class="button" @click="editBook({ ...book })">Edit</button>
+          <button class="button" @click="editBook(book)">Edit</button>
           <button
             class="button"
             style="background-color: #dc3545; margin-left: 20px"
@@ -28,12 +28,14 @@
     <div class="dialog">
       <h2>Title</h2>
       <label for="fname">Name</label>
-      <input type="text" v-model="nameBook.name" placeholder="Nhập tên sách" />
+      <input type="text" v-model="bookDetail.name" placeholder="Enter book" />
 
       <button
         class="btnSubmit"
         @click="
-          !nameBook.id ? addBook(nameBook.name) : editBook(nameBook, 'submit')
+          !bookDetail.id
+            ? addBook(bookDetail.name)
+            : editBook(bookDetail, 'submit')
         "
       >
         Add
@@ -43,51 +45,15 @@
 </template>
 
 <script>
-import { useBooksStore } from "../stores/book.js";
-import { storeToRefs } from "pinia";
+import { useBooksStore } from "../stores/book";
+import { mapState, mapActions } from "pinia";
 
 export default {
-  setup() {
-    const main = useBooksStore();
-
-    const { books } = storeToRefs(main);
-
-    const addBook = function (data) {
-      console.log("add", data);
-      main.addBook(data);
-      this.nameBook = {
-        id: "",
-        name: "",
-      };
-    };
-
-    const editBook = function (data, submit) {
-      if (submit) {
-        this.nameBook = {
-          id: "",
-          name: "",
-        };
-      } else {
-        this.nameBook = data;
-      }
-
-      main.editBook(data);
-    };
-
-    const removeBook = function (data) {
-      main.removeBook(data);
-    };
-
-    return {
-      books,
-      addBook,
-      editBook,
-      removeBook,
-      nameBook: {
-        id: "",
-        name: "",
-      },
-    };
+  computed: {
+    ...mapState(useBooksStore, ["books", "bookDetail"]),
+  },
+  methods: {
+    ...mapActions(useBooksStore, ["removeBook", "addBook", "editBook"]),
   },
 };
 </script>
