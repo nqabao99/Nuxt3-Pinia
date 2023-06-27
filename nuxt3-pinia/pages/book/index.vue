@@ -30,7 +30,11 @@ export default {
     ]),
     select(data, type) {
       this.selectBook(data, type);
-      useRouter().push({ path: `book/${type}` });
+      if (type === "view") {
+        useRouter().push({ path: `book/${data.id}` });
+      } else {
+        useRouter().push({ path: `book/${type}` });
+      }
     },
 
     async get() {
