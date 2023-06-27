@@ -2,18 +2,23 @@
   <div>
     <div class="header">
       <h1>List Book</h1>
+      <nuxt-link to="/book/add" class="button" style="background-color: #45a049"
+        >Add</nuxt-link
+      >
     </div>
     <table>
       <tr>
         <th>STT</th>
         <th>Name</th>
+        <th>Author</th>
         <th>Actions</th>
       </tr>
       <tr v-for="(book, index) in books" :key="book.id">
         <td>{{ index + 1 }}</td>
         <td>{{ book.name }}</td>
+        <td>{{ book.author }}</td>
         <td>
-          <button class="button" @click="editBook(book)">Edit</button>
+          <button class="button" @click="edit(book)">Edit</button>
           <button
             class="button"
             style="background-color: #dc3545; margin-left: 20px"
@@ -24,23 +29,6 @@
         </td>
       </tr>
     </table>
-
-    <div class="dialog">
-      <h2>Title</h2>
-      <label for="fname">Name</label>
-      <input type="text" v-model="bookDetail.name" placeholder="Enter book" />
-
-      <button
-        class="btnSubmit"
-        @click="
-          !bookDetail.id
-            ? addBook(bookDetail.name)
-            : editBook(bookDetail, 'submit')
-        "
-      >
-        Add
-      </button>
-    </div>
   </div>
 </template>
 
@@ -49,16 +37,33 @@ import { useBooksStore } from "../stores/book";
 import { mapState, mapActions } from "pinia";
 
 export default {
+  mounted() {
+    this.resetBookDetail();
+  },
   computed: {
     ...mapState(useBooksStore, ["books", "bookDetail"]),
   },
   methods: {
-    ...mapActions(useBooksStore, ["removeBook", "addBook", "editBook"]),
+    ...mapActions(useBooksStore, [
+      "removeBook",
+      "addBook",
+      "editBook",
+      "resetBookDetail",
+    ]),
+    edit(data) {
+      this.editBook(data);
+      useRouter().push({ path: "book/add" });
+    },
   },
 };
 </script>
 
 <style>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -83,6 +88,7 @@ tr:nth-child(even) {
   text-align: center;
   color: #fff;
   width: 100px;
+  text-decoration: none;
 }
 
 .dialog {
