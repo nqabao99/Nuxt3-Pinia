@@ -1,6 +1,14 @@
 <template>
   <div class="dialog">
-    <h2>{{ !bookDetail.id ? "Add book" : "Edit book" }}</h2>
+    <h2>
+      {{
+        actions === "edit"
+          ? "Edit book"
+          : actions === "view"
+          ? "View"
+          : "Add book"
+      }}
+    </h2>
     <label for="name">Name</label>
     <input
       class="textField"
@@ -24,11 +32,10 @@
 
       <button
         class="btnSubmit"
-        @click="
-          !bookDetail.id ? addBook(bookDetail) : editBook(bookDetail, 'submit')
-        "
+        @click="actions !== 'edit' ? add(bookDetail) : edit(bookDetail)"
+        v-show="actions !== 'view'"
       >
-        {{ !bookDetail.id ? "Add" : "Edit" }}
+        {{ actions !== "edit" ? "Add" : "Edit" }}
       </button>
     </div>
   </div>
@@ -40,10 +47,22 @@ import { mapState, mapActions } from "pinia";
 
 export default {
   computed: {
-    ...mapState(useBooksStore, ["books", "bookDetail"]),
+    ...mapState(useBooksStore, ["books", "bookDetail", "actions"]),
   },
   methods: {
     ...mapActions(useBooksStore, ["removeBook", "addBook", "editBook"]),
+    add(data) {
+      if (data.name !== "" && data.author !== "") {
+        this.addBook(data);
+        useRouter().push({ path: "/book" });
+      }
+    },
+    edit(data) {
+      if (data.name !== "" && data.author !== "") {
+        this.editBook(data);
+        useRouter().push({ path: "/book" });
+      }
+    },
   },
 };
 </script>
@@ -52,6 +71,8 @@ export default {
 .dialog {
   border-radius: 5px;
   background-color: #f2f2f2;
+  padding: 20px;
+  margin-top: 30px;
 }
 
 h2 {
@@ -59,6 +80,7 @@ h2 {
 }
 
 .textField {
+  width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -73,7 +95,7 @@ h2 {
 }
 
 .btnSubmit {
-  width: 30% !important;
+  width: 30%;
   background-color: #4caf50;
   color: white;
   padding: 14px 20px;
@@ -83,9 +105,5 @@ h2 {
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-}
-
-.btnSubmit:hover {
-  background-color: #45a049;
 }
 </style>

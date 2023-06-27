@@ -18,10 +18,17 @@
         <td>{{ book.name }}</td>
         <td>{{ book.author }}</td>
         <td>
-          <button class="button" @click="edit(book)">Edit</button>
           <button
             class="button"
-            style="background-color: #dc3545; margin-left: 20px"
+            style="background-color: #dedede"
+            @click="select(book, 'view')"
+          >
+            View
+          </button>
+          <button class="button" @click="select(book, 'edit')">Edit</button>
+          <button
+            class="button"
+            style="background-color: #dc3545"
             @click="removeBook(book.id)"
           >
             Remove
@@ -47,11 +54,11 @@ export default {
     ...mapActions(useBooksStore, [
       "removeBook",
       "addBook",
-      "editBook",
+      "selectBook",
       "resetBookDetail",
     ]),
-    edit(data) {
-      this.editBook(data);
+    select(data, type) {
+      this.selectBook(data, type);
       useRouter().push({ path: "book/add" });
     },
   },
@@ -76,10 +83,6 @@ th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
 .button {
   padding: 5px 0;
   border-radius: 5px;
@@ -89,41 +92,6 @@ tr:nth-child(even) {
   color: #fff;
   width: 100px;
   text-decoration: none;
-}
-
-.dialog {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  margin-top: 30px;
-}
-
-.dialog h2 {
-  text-align: center;
-}
-
-.dialog input[type="text"] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.dialog .btnSubmit {
-  width: 100%;
-  background-color: #4caf50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.dialog .btnSubmit:hover {
-  background-color: #45a049;
+  margin-right: 20px;
 }
 </style>
