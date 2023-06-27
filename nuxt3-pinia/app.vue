@@ -10,7 +10,7 @@
   padding: 0;
 }
 .container {
-  width: 80%;
+  width: 50%;
   margin: 0 auto;
 }
 </style>

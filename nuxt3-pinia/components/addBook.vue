@@ -15,6 +15,7 @@
       type="text"
       v-model="bookDetail.name"
       placeholder="Enter book"
+      :readonly="actions === 'view'"
     />
 
     <label for="author">Author</label>
@@ -23,6 +24,7 @@
       type="text"
       v-model="bookDetail.author"
       placeholder="Enter author"
+      :readonly="actions === 'view'"
     />
 
     <div class="btn">
@@ -42,32 +44,25 @@
 </template>
 
 <script>
-import { useBooksStore } from "../stores/book";
-import { mapState, mapActions } from "pinia";
-
 export default {
-  computed: {
-    ...mapState(useBooksStore, ["books", "bookDetail", "actions"]),
-  },
-  methods: {
-    ...mapActions(useBooksStore, ["removeBook", "addBook", "editBook"]),
-    add(data) {
-      if (data.name !== "" && data.author !== "") {
-        this.addBook(data);
-        useRouter().push({ path: "/book" });
-      }
+  props: {
+    bookDetail: {
+      type: Object,
     },
-    edit(data) {
-      if (data.name !== "" && data.author !== "") {
-        this.editBook(data);
-        useRouter().push({ path: "/book" });
-      }
+    actions: {
+      type: String,
+    },
+    add: {
+      type: Function,
+    },
+    edit: {
+      type: Function,
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .dialog {
   border-radius: 5px;
   background-color: #f2f2f2;

@@ -2,16 +2,20 @@
   <div>
     <div class="header">
       <h1>List Book</h1>
-      <nuxt-link to="/book/add" class="button" style="background-color: #45a049"
+      <nuxt-link
+        to="/book/add"
+        class="button"
+        style="background-color: #45a049; margin-right: 0px"
         >Add</nuxt-link
       >
     </div>
-    <table>
+    <div class="loader" v-if="isLoading"></div>
+    <table v-else>
       <tr>
         <th>STT</th>
         <th>Name</th>
         <th>Author</th>
-        <th>Actions</th>
+        <th style="text-align: center">Actions</th>
       </tr>
       <tr v-for="(book, index) in books" :key="book.id">
         <td>{{ index + 1 }}</td>
@@ -40,40 +44,42 @@
 </template>
 
 <script>
-import { useBooksStore } from "../stores/book";
-import { mapState, mapActions } from "pinia";
-
 export default {
-  mounted() {
-    this.resetBookDetail();
-  },
-  computed: {
-    ...mapState(useBooksStore, ["books", "bookDetail"]),
-  },
-  methods: {
-    ...mapActions(useBooksStore, [
-      "removeBook",
-      "addBook",
-      "selectBook",
-      "resetBookDetail",
-    ]),
-    select(data, type) {
-      this.selectBook(data, type);
-      useRouter().push({ path: "book/add" });
+  props: {
+    books: {
+      type: Array,
+    },
+    bookDetail: {
+      type: Object,
+    },
+    removeBook: {
+      type: Function,
+    },
+    select: {
+      type: Function,
+    },
+    isLoading: {
+      type: Boolean,
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 10px 0;
 }
 table {
   border-collapse: collapse;
   width: 100%;
+}
+
+td:last-child {
+  display: flex;
+  justify-content: center;
 }
 
 td,
@@ -93,5 +99,34 @@ th {
   width: 100px;
   text-decoration: none;
   margin-right: 20px;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #3498db;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  margin: 100px auto;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
