@@ -34,7 +34,7 @@
 
       <button
         class="btnSubmit"
-        @click="actions !== 'edit' ? add(bookDetail) : edit(bookDetail)"
+        @click="submit(bookDetail)"
         v-show="actions !== 'view'"
       >
         {{ actions !== "edit" ? "Add" : "Edit" }}
@@ -52,10 +52,7 @@ export default {
     actions: {
       type: String,
     },
-    add: {
-      type: Function,
-    },
-    edit: {
+    submit: {
       type: Function,
     },
   },

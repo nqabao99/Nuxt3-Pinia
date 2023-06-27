@@ -1,10 +1,5 @@
 <template>
-  <AddBook
-    :bookDetail="bookDetail"
-    :actions="actions"
-    :edit="edit"
-    :add="add"
-  />
+  <AddBook :bookDetail="bookDetail" :actions="actions" :submit="edit" />
 </template>
 
 <script>
@@ -16,13 +11,7 @@ export default {
     ...mapState(useBooksStore, ["bookDetail", "actions"]),
   },
   methods: {
-    ...mapActions(useBooksStore, ["removeBook", "addBook", "editBook"]),
-    add(data) {
-      if (data.name !== "" && data.author !== "") {
-        this.addBook(data);
-        useRouter().push({ path: "/book" });
-      }
-    },
+    ...mapActions(useBooksStore, ["editBook"]),
     edit(data) {
       if (data.name !== "" && data.author !== "") {
         this.editBook(data);
