@@ -14,7 +14,7 @@ export default {
     ...mapActions(useBooksStore, ["getBookDetail"]),
     async getDetail(id) {
       this.isLoading = true;
-      await new Promise((resolve) => setTimeout(resolve, 700));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       this.isLoading = false;
       this.getBookDetail(id);
     },

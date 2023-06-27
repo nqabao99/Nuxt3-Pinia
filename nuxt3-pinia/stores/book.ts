@@ -15,17 +15,23 @@ export const useBooksStore = defineStore("useBooksStore", {
         name: "",
         author: "",
       } as TypeBook,
-      actions: "" as string,
     };
   },
   actions: {
     getBooks(data: TypeBook[]) {
-      this.books = data;
+      this.books = data || [];
+      this.bookDetail = {
+        id: "",
+        name: "",
+        author: "",
+      };
     },
     getBookDetail(id: string) {
-      this.bookDetail = [...this.books].find(
-        (item) => item.id === id
-      ) as TypeBook;
+      if (localStorage.getItem("listBook")) {
+        this.bookDetail = [
+          ...JSON.parse(localStorage.getItem("listBook") as string),
+        ].find((item) => item.id === id);
+      }
     },
     addBook(data: TypeBook) {
       const listBook = [
@@ -44,18 +50,6 @@ export const useBooksStore = defineStore("useBooksStore", {
       const listBook = [...this.books].filter((item) => item.id !== id);
       localStorage.setItem("listBook", JSON.stringify(listBook));
       this.books = listBook;
-    },
-    selectBook(data: TypeBook, type: string) {
-      this.actions = type;
-      this.bookDetail = { ...this.bookDetail, ...data };
-    },
-    resetBookDetail() {
-      this.actions = "";
-      this.bookDetail = {
-        id: "",
-        name: "",
-        author: "",
-      };
     },
   },
 });

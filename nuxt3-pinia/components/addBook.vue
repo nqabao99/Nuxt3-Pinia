@@ -1,13 +1,8 @@
 <template>
-  <div class="dialog">
+  <Loading v-if="isLoading"></Loading>
+  <div class="dialog" v-else>
     <h2>
-      {{
-        actions === "edit"
-          ? "Edit book"
-          : actions === "view"
-          ? "View"
-          : "Add book"
-      }}
+      {{ title }}
     </h2>
     <label for="name">Name</label>
     <input
@@ -34,10 +29,10 @@
 
       <button
         class="btnSubmit"
-        @click="submit(bookDetail)"
+        @click="handleConfirm(bookDetail)"
         v-show="actions !== 'view'"
       >
-        {{ actions !== "edit" ? "Add" : "Edit" }}
+        {{ title }}
       </button>
     </div>
   </div>
@@ -52,9 +47,17 @@ export default {
     actions: {
       type: String,
     },
-    submit: {
+    handleConfirm: {
       type: Function,
     },
+    isLoading: {
+      type: Boolean,
+    },
+  },
+  data() {
+    return {
+      title: this.actions !== "edit" ? "Add" : "Edit",
+    };
   },
 };
 </script>

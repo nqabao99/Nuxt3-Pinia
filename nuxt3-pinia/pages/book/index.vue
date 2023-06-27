@@ -3,7 +3,7 @@
     :books="books"
     :bookDetail="bookDetail"
     :removeBook="removeBook"
-    :select="select"
+    :changeRouter="changeRouter"
     :isLoading="isLoading"
   />
 </template>
@@ -22,31 +22,23 @@ export default {
     ...mapState(useBooksStore, ["books", "bookDetail"]),
   },
   methods: {
-    ...mapActions(useBooksStore, [
-      "removeBook",
-      "selectBook",
-      "resetBookDetail",
-      "getBooks",
-    ]),
-    select(data, type) {
-      this.selectBook(data, type);
+    ...mapActions(useBooksStore, ["removeBook", , "getBooks"]),
+    changeRouter(id, type) {
       if (type === "view") {
-        useRouter().push({ path: `book/${data.id}` });
+        useRouter().push({ path: `book/${id}` });
       } else {
-        useRouter().push({ path: `book/${type}` });
+        useRouter().push({ path: `book/edit/${id}` });
       }
     },
-
     async get() {
       this.isLoading = true;
-      const res = await new Promise((resolve) => setTimeout(resolve, 700));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       this.isLoading = false;
       this.getBooks(JSON.parse(localStorage.getItem("listBook")));
     },
   },
   created() {
     this.get();
-    this.resetBookDetail();
   },
 };
 </script>

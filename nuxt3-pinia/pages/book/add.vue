@@ -1,5 +1,5 @@
 <template>
-  <AddBook :bookDetail="bookDetail" :actions="actions" :submit="add" />
+  <AddBook :bookDetail="bookDetail" :actions="`add`" :handleConfirm="add" />
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import { mapState, mapActions } from "pinia";
 
 export default {
   computed: {
-    ...mapState(useBooksStore, ["bookDetail", "actions"]),
+    ...mapState(useBooksStore, ["bookDetail"]),
   },
   methods: {
     ...mapActions(useBooksStore, ["addBook"]),

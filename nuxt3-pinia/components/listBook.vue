@@ -9,7 +9,7 @@
         >Add</nuxt-link
       >
     </div>
-    <div class="loader" v-if="isLoading"></div>
+    <Loading v-if="isLoading"></Loading>
     <table v-else>
       <tr>
         <th>STT</th>
@@ -25,11 +25,13 @@
           <button
             class="button"
             style="background-color: #dedede"
-            @click="select(book, 'view')"
+            @click="changeRouter(book.id, 'view')"
           >
             View
           </button>
-          <button class="button" @click="select(book, 'edit')">Edit</button>
+          <button class="button" @click="changeRouter(book.id, 'edit')">
+            Edit
+          </button>
           <button
             class="button"
             style="background-color: #dc3545"
@@ -55,7 +57,7 @@ export default {
     removeBook: {
       type: Function,
     },
-    select: {
+    changeRouter: {
       type: Function,
     },
     isLoading: {
@@ -99,34 +101,5 @@ th {
   width: 100px;
   text-decoration: none;
   margin-right: 20px;
-}
-
-.loader {
-  border: 8px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 8px solid #3498db;
-  width: 50px;
-  height: 50px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-  margin: 100px auto;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
 </style>
