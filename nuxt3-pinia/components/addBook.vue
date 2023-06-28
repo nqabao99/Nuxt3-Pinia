@@ -4,26 +4,28 @@
     <h2 class="mb-4 text-center">
       {{ this.actions !== "edit" ? "Add book" : "Edit book" }}
     </h2>
-    <div class="p-inputgroup flex-1 mb-4">
-      <span class="p-inputgroup-addon">
-        <i class="pi pi-book"></i>
-      </span>
+    <div class="flex flex-column mb-4">
       <InputText
         type="text"
         placeholder="Name book"
         v-model="bookDetail.name"
+        :class="{ 'border-red-500': messErrBook }"
       />
+      <small class="p-error mt-1" v-show="messErrBook"
+        >Name book is required!</small
+      >
     </div>
 
-    <div class="p-inputgroup flex-1 mb-4">
-      <span class="p-inputgroup-addon">
-        <i class="pi pi-user"></i>
-      </span>
+    <div class="flex flex-column mb-4">
       <InputText
         type="text"
         placeholder="Name author"
         v-model="bookDetail.author"
+        :class="{ 'border-red-500': messErrAuthor }"
       />
+      <small class="p-error mt-1" v-show="messErrAuthor"
+        >Name author is required!</small
+      >
     </div>
 
     <div class="flex justify-content-center">
@@ -33,7 +35,7 @@
 
       <Button
         class="ml-5"
-        @click="handleConfirm(bookDetail)"
+        @click="validate(bookDetail)"
         v-show="actions !== 'view'"
         label="Confirm"
       />
@@ -43,6 +45,13 @@
 
 <script>
 export default {
+  data() {
+    return {
+      messErrBook: false,
+      messErrAuthor: false,
+      isSubmit: false,
+    };
+  },
   props: {
     bookDetail: {
       type: Object,
@@ -57,10 +66,39 @@ export default {
       type: Boolean,
     },
   },
+  methods: {
+    validate(data) {
+      if (data.name === "") {
+        this.messErrBook = true;
+      }
+      if (data.author === "") {
+        this.messErrAuthor = true;
+      }
+      if (data.name !== "" && data.author !== "") {
+        this.handleConfirm(data);
+      }
+      this.isSubmit = true;
+    },
+  },
+
+  beforeUpdate() {
+    if (this.isSubmit) {
+      if (this.bookDetail.name !== "") {
+        this.messErrBook = false;
+      } else {
+        this.messErrBook = true;
+      }
+      if (this.bookDetail.author !== "") {
+        this.messErrAuthor = false;
+      } else {
+        this.messErrAuthor = true;
+      }
+    }
+  },
 };
 </script>
 
-<style scoped>
+<style>
 .h2 {
 }
 </style>

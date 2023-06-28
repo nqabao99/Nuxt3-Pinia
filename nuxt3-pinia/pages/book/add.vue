@@ -13,10 +13,8 @@ export default {
   methods: {
     ...mapActions(useBooksStore, ["addBook"]),
     add(data) {
-      if (data.name !== "" && data.author !== "") {
-        this.addBook(data);
-        useRouter().push({ path: "/book" });
-      }
+      this.addBook(data);
+      useRouter().push({ path: "/book" });
     },
   },
 };
