@@ -1,7 +1,7 @@
 <template>
   <AddBook
     :bookDetail="bookDetail"
-    :actions="`edit`"
+    actions="edit"
     :handleConfirm="edit"
     :isLoading="isLoading"
   />

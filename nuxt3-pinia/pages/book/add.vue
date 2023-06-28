@@ -1,5 +1,5 @@
 <template>
-  <AddBook :bookDetail="bookDetail" :actions="`add`" :handleConfirm="add" />
+  <AddBook :bookDetail="bookDetail" actions="add" :handleConfirm="add" />
 </template>
 
 <script>
