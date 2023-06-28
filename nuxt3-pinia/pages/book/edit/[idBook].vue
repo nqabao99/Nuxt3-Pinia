@@ -4,6 +4,7 @@
     actions="edit"
     :handleConfirm="edit"
     :isLoading="isLoading"
+    :cache="cache"
   />
 </template>
 
@@ -18,7 +19,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(useBooksStore, ["bookDetail"]),
+    ...mapState(useBooksStore, ["bookDetail", "cache"]),
   },
   methods: {
     ...mapActions(useBooksStore, ["editBook", "getBookDetail"]),

@@ -1,5 +1,6 @@
 <template>
   <Loading v-if="isLoading"></Loading>
+  <NoData v-else-if="!bookDetail"></NoData>
   <div class="mt-5 p-5 border-round-sm surface-100" v-else>
     <h2 class="mb-4 text-center">Detail book</h2>
     <div class="p-inputgroup flex-1 mb-4">

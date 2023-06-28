@@ -27,7 +27,6 @@ export default {
       if (type === "view") {
         useRouter().push({ path: `book/${id}` });
       } else {
-        console.log("ddd");
         useRouter().push({ path: `book/edit/${id}` });
       }
     },

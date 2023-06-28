@@ -15,6 +15,7 @@ export const useBooksStore = defineStore("useBooksStore", {
         name: "",
         author: "",
       } as TypeBook,
+      cache: {} as TypeBook,
     };
   },
   actions: {
@@ -29,6 +30,9 @@ export const useBooksStore = defineStore("useBooksStore", {
     getBookDetail(id: string) {
       if (localStorage.getItem("listBook")) {
         this.bookDetail = [
+          ...JSON.parse(localStorage.getItem("listBook") as string),
+        ].find((item) => item.id === id);
+        this.cache = [
           ...JSON.parse(localStorage.getItem("listBook") as string),
         ].find((item) => item.id === id);
       }
