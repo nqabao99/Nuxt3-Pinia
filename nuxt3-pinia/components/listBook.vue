@@ -12,8 +12,8 @@
   <table v-else id="customers">
     <tr>
       <th>STT</th>
-      <th class="w-3">Name</th>
-      <th class="w-3">Author</th>
+      <th>Name</th>
+      <th>Author</th>
       <th>Actions</th>
     </tr>
     <tr v-if="books.length === 0">
