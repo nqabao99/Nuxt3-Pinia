@@ -1,0 +1,2 @@
+{"/Users/yelinz/Desktop/1/Nuxt3-Pinia/nuxt3-pinia/components/sum.js": {"path":"/Users/yelinz/Desktop/1/Nuxt3-Pinia/nuxt3-pinia/components/sum.js","statementMap":{"0":{"start":{"line":2,"column":2},"end":{"line":2,"column":15}}},"fnMap":{"0":{"name":"sum","decl":{"start":{"line":1,"column":16},"end":{"line":1,"column":19}},"loc":{"start":{"line":1,"column":26},"end":{"line":3,"column":1}},"line":1}},"branchMap":{},"s":{"0":1},"f":{"0":1},"b":{},"_coverageSchema":"43e27e138ebf9cfc5966b082cf9a028302ed4184","hash":"768c10ce7e5529fdad97b0c65eeee6de322e2470"}
+}

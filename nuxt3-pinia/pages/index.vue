@@ -1,3 +1,5 @@
 <template>
-  <Button label="sdsdsd" icon="pi pi-check"></Button>
+  <div>
+    <Counter />
+  </div>
 </template>
