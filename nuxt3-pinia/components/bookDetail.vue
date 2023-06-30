@@ -1,6 +1,6 @@
 <template>
-  <Loading v-if="isLoading"></Loading>
-  <NoData v-else-if="!bookDetail"></NoData>
+  <Loading v-if="isLoading" id="test-loading"></Loading>
+  <NoData v-else-if="!bookDetail" id="test-noData"></NoData>
   <div class="mt-5 p-5 border-round-sm surface-100" v-else>
     <h2 class="mb-4 text-center">Detail book</h2>
     <div class="p-inputgroup flex-1 mb-4">
@@ -12,6 +12,7 @@
         placeholder="Name book"
         v-model="bookDetail.name"
         :readonly="true"
+        id="test-nameBook"
       />
     </div>
 
@@ -28,9 +29,9 @@
     </div>
 
     <div class="flex justify-content-center">
-      <nuxt-link to="/book">
+      <NuxtLink to="/book">
         <Button label="Back" severity="secondary" outlined />
-      </nuxt-link>
+      </NuxtLink>
     </div>
   </div>
 </template>

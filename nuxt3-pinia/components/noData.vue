@@ -14,7 +14,9 @@
     <template #content>
       <h3 class="text-center">No data</h3>
       <div class="flex justify-content-center">
-        <NuxtLink to="/book"> <Button label="Back" link /></NuxtLink>
+        <NuxtLink to="/book">
+          <Button label="Back" link
+        /></NuxtLink>
       </div>
     </template>
   </Card>

@@ -7,7 +7,7 @@
       ><Button size="small" label="Add" severity="success"
     /></NuxtLink>
   </div>
-  <Loading v-if="isLoading"></Loading>
+  <Loading v-if="isLoading" id="test-loading"></Loading>
 
   <table v-else id="customers">
     <tr>
@@ -16,7 +16,7 @@
       <th>Author</th>
       <th>Actions</th>
     </tr>
-    <tr v-if="books.length === 0">
+    <tr v-if="books.length === 0" id="test-noData">
       <td colspan="4" class="text-center">No data</td>
     </tr>
     <tr v-else v-for="(book, index) in books" :key="book.id">
@@ -47,9 +47,6 @@ export default {
   props: {
     books: {
       type: Array,
-    },
-    bookDetail: {
-      type: Object,
     },
     removeBook: {
       type: Function,
