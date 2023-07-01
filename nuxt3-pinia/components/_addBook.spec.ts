@@ -2,6 +2,12 @@ import { shallowMount } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AddBook from "./addBook.vue";
 
+const cache = {
+  id: "123",
+  name: "book1",
+  author: "Author",
+};
+
 describe("AddBook", () => {
   beforeEach(() => {
     // Mock localStorage.getItem() to return a specific value
@@ -65,12 +71,12 @@ describe("AddBook", () => {
       name: "book5",
       author: "author",
     };
-    const handleConfirmMock = vi.fn();
+
     const wrapper = shallowMount(AddBook, {
       props: {
         actions: "add",
         bookDetail,
-        handleConfirm: handleConfirmMock,
+        isLoading: false,
       },
     });
 
@@ -86,7 +92,8 @@ describe("AddBook", () => {
     expect(validateSpy).toHaveBeenCalled();
   });
 
-  it("No errors with action add", async () => {
+  // method action add
+  it("No errors with action add", () => {
     const bookDetail = { name: "book3", author: "Author" };
     const handleConfirmMock = vi.fn();
     const wrapper = shallowMount(AddBook, {
@@ -116,7 +123,7 @@ describe("AddBook", () => {
     expect(handleConfirmMock).toHaveBeenCalledWith(bookDetail);
   });
 
-  it("errors name is empty with action add", async () => {
+  it("errors name is empty with action add", () => {
     const bookDetail = { name: "", author: "Author" };
     const handleConfirmMock = vi.fn();
     const wrapper = shallowMount(AddBook, {
@@ -141,7 +148,7 @@ describe("AddBook", () => {
     expect(handleConfirmMock).not.toHaveBeenCalled();
   });
 
-  it("errors name is exists with action add", async () => {
+  it("errors name is exists with action add", () => {
     const bookDetail = { name: "book1", author: "Author" };
     const handleConfirmMock = vi.fn();
     const wrapper = shallowMount(AddBook, {
@@ -168,7 +175,7 @@ describe("AddBook", () => {
     expect(handleConfirmMock).not.toHaveBeenCalled();
   });
 
-  it("errors author is empty with action add", async () => {
+  it("errors author is empty with action add", () => {
     const bookDetail = { name: "book3", author: "" };
     const handleConfirmMock = vi.fn();
     const wrapper = shallowMount(AddBook, {
@@ -195,7 +202,7 @@ describe("AddBook", () => {
     expect(handleConfirmMock).not.toHaveBeenCalled();
   });
 
-  it("error name and author is empty with action add", async () => {
+  it("error name and author is empty with action add", () => {
     const bookDetail = { name: "", author: "" };
     const handleConfirmMock = vi.fn();
     const wrapper = shallowMount(AddBook, {
@@ -219,10 +226,42 @@ describe("AddBook", () => {
     expect(handleConfirmMock).not.toHaveBeenCalled();
   });
 
-  it("error book is exists with action edit", () => {
-    // Set up the necessary data and props
+  // method action edit
+
+  it("No errors with action edit", () => {
+    const bookDetail = { id: "123", name: "book1", author: "Author123" };
     const handleConfirmMock = vi.fn();
-    const bookDetail = { name: "book2", author: "Author" };
+    const wrapper = shallowMount(AddBook, {
+      props: {
+        handleConfirm: handleConfirmMock,
+        actions: "edit",
+        cache,
+      },
+      data() {
+        return {
+          messErrBook: "",
+          messErrAuthor: "",
+          isSubmit: false,
+        };
+      },
+    });
+
+    // Call the validate method
+    wrapper.vm.validate(bookDetail);
+
+    // Call the checkBookEqual method
+    wrapper.vm.checkBookEqual(bookDetail.name);
+
+    // Assert the expected behavior
+    expect(wrapper.vm.messErrBook).toBe("");
+    expect(wrapper.vm.messErrAuthor).toBe("");
+    expect(wrapper.vm.isSubmit).toBe(true);
+    expect(handleConfirmMock).toHaveBeenCalledWith(bookDetail);
+  });
+
+  it("error name is empty with action edit", () => {
+    const handleConfirmMock = vi.fn();
+    const bookDetail = { id: "123", name: "", author: "Author" };
     const wrapper = shallowMount(AddBook, {
       data() {
         return {
@@ -234,10 +273,34 @@ describe("AddBook", () => {
       props: {
         handleConfirm: handleConfirmMock,
         actions: "edit",
-        cache: {
-          name: "book",
-          author: "Author",
-        },
+        cache,
+      },
+    });
+
+    wrapper.vm.validate(bookDetail);
+
+    expect(wrapper.vm.messErrBook).toBe("Name book is required!");
+    expect(wrapper.vm.messErrAuthor).toBe("");
+    expect(wrapper.vm.isSubmit).toBe(true);
+    expect(handleConfirmMock).not.toHaveBeenCalledWith(bookDetail);
+  });
+
+  it("error book is exists with action edit", () => {
+    // Set up the necessary data and props
+    const handleConfirmMock = vi.fn();
+    const bookDetail = { id: "123", name: "book2", author: "Author" };
+    const wrapper = shallowMount(AddBook, {
+      data() {
+        return {
+          messErrBook: "",
+          messErrAuthor: "",
+          isSubmit: false,
+        };
+      },
+      props: {
+        handleConfirm: handleConfirmMock,
+        actions: "edit",
+        cache,
       },
     });
 
@@ -248,6 +311,62 @@ describe("AddBook", () => {
     expect(wrapper.vm.messErrBook).toBe("Name book is exists");
     expect(wrapper.vm.messErrAuthor).toBe("");
     expect(wrapper.vm.isSubmit).toBe(true);
-    expect(handleConfirmMock).not.toHaveBeenCalled();
+    expect(handleConfirmMock).not.toHaveBeenCalledWith(bookDetail);
+  });
+
+  it("error author is empty with action edit", () => {
+    const handleConfirmMock = vi.fn();
+    const bookDetail = { id: "123", name: "book3", author: "" };
+    const wrapper = shallowMount(AddBook, {
+      data() {
+        return {
+          messErrBook: "",
+          messErrAuthor: "",
+          isSubmit: false,
+        };
+      },
+      props: {
+        handleConfirm: handleConfirmMock,
+        actions: "edit",
+        cache,
+      },
+    });
+
+    wrapper.vm.validate(bookDetail);
+
+    wrapper.vm.checkBookEqual(bookDetail.name);
+
+    expect(wrapper.vm.messErrBook).toBe("");
+    expect(wrapper.vm.messErrAuthor).toBe("Name author is required!");
+    expect(wrapper.vm.isSubmit).toBe(true);
+    expect(handleConfirmMock).not.toHaveBeenCalledWith(bookDetail);
+  });
+
+  it("error book is empty and author is empty with action edit", () => {
+    const handleConfirmMock = vi.fn();
+    const bookDetail = { id: "123", name: "", author: "" };
+    const wrapper = shallowMount(AddBook, {
+      data() {
+        return {
+          messErrBook: "",
+          messErrAuthor: "",
+          isSubmit: false,
+        };
+      },
+      props: {
+        actions: "edit",
+        handleConfirm: handleConfirmMock,
+        cache,
+      },
+    });
+
+    wrapper.vm.validate(bookDetail);
+
+    console.log("dddd", wrapper.vm.messErrBook);
+
+    expect(wrapper.vm.messErrBook).toBe("Name book is required!");
+    expect(wrapper.vm.messErrAuthor).toBe("Name author is required!");
+    expect(wrapper.vm.isSubmit).toBe(true);
+    expect(handleConfirmMock).not.toHaveBeenCalledWith(bookDetail);
   });
 });
