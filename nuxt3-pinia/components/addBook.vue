@@ -1,8 +1,8 @@
 <template>
-  <Loading v-if="isLoading"></Loading>
-  <NoData v-else-if="!bookDetail"></NoData>
+  <Loading v-if="isLoading" id="test-loading"></Loading>
+  <NoData v-else-if="!bookDetail" id="test-noData"></NoData>
   <div class="mt-5 p-5 border-round-sm surface-100" v-else>
-    <h2 class="mb-4 text-center">
+    <h2 class="mb-4 text-center" id="test-title">
       {{ this.actions !== "edit" ? "Add book" : "Edit book" }}
     </h2>
     <div class="flex flex-column mb-4">
@@ -32,12 +32,7 @@
         <Button label="Cancer" severity="secondary" outlined />
       </nuxt-link>
 
-      <Button
-        class="ml-5"
-        @click="validate(bookDetail)"
-        v-show="actions !== 'view'"
-        label="Confirm"
-      />
+      <Button class="ml-5" @click="validate(bookDetail)" label="Confirm" />
     </div>
   </div>
 </template>

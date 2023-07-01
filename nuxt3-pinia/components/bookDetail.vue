@@ -12,7 +12,6 @@
         placeholder="Name book"
         v-model="bookDetail.name"
         :readonly="true"
-        id="test-nameBook"
       />
     </div>
 
@@ -37,6 +36,8 @@
 </template>
 
 <script>
+import InputText from "primevue/inputtext";
+
 export default {
   props: {
     bookDetail: {
@@ -45,6 +46,9 @@ export default {
     isLoading: {
       type: Boolean,
     },
+  },
+  components: {
+    InputText,
   },
 };
 </script>
