@@ -39,6 +39,8 @@
 
 <script>
 import InputText from "primevue/inputtext";
+import { useBooksStore } from "../stores/book";
+import { mapState, mapActions } from "pinia";
 export default {
   components: {
     InputText,
@@ -48,40 +50,19 @@ export default {
       messErrBook: "",
       messErrAuthor: "",
       isSubmit: false,
+      isLoading: false,
     };
   },
   props: {
-    bookDetail: {
-      type: Object,
-    },
     actions: {
       type: String,
     },
-    handleConfirm: {
-      type: Function,
-    },
-    isLoading: {
-      type: Boolean,
-    },
-    cache: {
-      type: Object,
-    },
+  },
+  computed: {
+    ...mapState(useBooksStore, ["bookDetail", "cache"]),
   },
   methods: {
-    validate(data) {
-      if (data.name === "") {
-        this.messErrBook = "Name book is required!";
-      } else {
-        this.checkBookEqual(data.name);
-      }
-      if (data.author === "") {
-        this.messErrAuthor = "Name author is required!";
-      }
-      if (this.messErrBook === "" && this.messErrAuthor === "") {
-        this.handleConfirm(data);
-      }
-      this.isSubmit = true;
-    },
+    ...mapActions(useBooksStore, ["addBook", "editBook", "getBookDetail"]),
     checkBookEqual(data) {
       const books = JSON.parse(localStorage.getItem("listBook")) || [];
       const book = books.find((item) => item.name === data);
@@ -94,19 +75,53 @@ export default {
         this.messErrBook = "";
       }
     },
+    setMessErrRequired(type) {
+      if (type === "book") {
+        this.messErrBook = "Name book is required!";
+      } else {
+        this.messErrAuthor = "Name author is required!";
+      }
+    },
+    validate(data) {
+      if (data.name === "") {
+        this.setMessErrRequired("book");
+      } else {
+        this.checkBookEqual(data.name);
+      }
+      if (data.author === "") {
+        this.setMessErrRequired();
+      }
+      if (this.messErrBook === "" && this.messErrAuthor === "") {
+        if (this.actions === "add") {
+          this.addBook(data);
+        } else {
+          this.editBook(data);
+        }
+        useRouter().push({ path: "/book" });
+      }
+      this.isSubmit = true;
+    },
+    async getDetail(id) {
+      this.isLoading = true;
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      this.isLoading = false;
+      this.getBookDetail(id);
+    },
   },
-
+  created() {
+    if (this.actions === "edit") this.getDetail(useRoute().params.idBook);
+  },
   beforeUpdate() {
     if (this.isSubmit) {
       if (this.bookDetail.name !== "") {
         this.checkBookEqual(this.bookDetail.name);
       } else {
-        this.messErrBook = "Name book is required!";
+        this.setMessErrRequired("book");
       }
       if (this.bookDetail.author !== "") {
         this.messErrAuthor = "";
       } else {
-        this.messErrAuthor = "Name author is required!";
+        this.setMessErrRequired();
       }
     }
   },

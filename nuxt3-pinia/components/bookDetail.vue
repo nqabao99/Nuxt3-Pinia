@@ -37,18 +37,32 @@
 
 <script>
 import InputText from "primevue/inputtext";
+import { useBooksStore } from "../stores/book";
+import { mapActions, mapState } from "pinia";
 
 export default {
-  props: {
-    bookDetail: {
-      type: Object,
-    },
-    isLoading: {
-      type: Boolean,
-    },
+  data() {
+    return {
+      isLoading: false,
+    };
   },
   components: {
     InputText,
+  },
+  computed: {
+    ...mapState(useBooksStore, ["bookDetail"]),
+  },
+  methods: {
+    ...mapActions(useBooksStore, ["getBookDetail"]),
+    async getDetail(id) {
+      this.isLoading = true;
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      this.isLoading = false;
+      this.getBookDetail(id);
+    },
+  },
+  created() {
+    this.getDetail(useRoute().params.idBook);
   },
 };
 </script>

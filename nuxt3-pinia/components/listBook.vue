@@ -43,20 +43,36 @@
 </template>
 
 <script>
+import { useBooksStore } from "../stores/book";
+import { mapState, mapActions } from "pinia";
+
 export default {
-  props: {
-    books: {
-      type: Array,
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  computed: {
+    ...mapState(useBooksStore, ["books"]),
+  },
+  methods: {
+    ...mapActions(useBooksStore, ["removeBook", "getBooks"]),
+    changeRouter(id, type) {
+      if (type === "view") {
+        useRouter().push({ path: `book/${id}` });
+      } else {
+        useRouter().push({ path: `book/edit/${id}` });
+      }
     },
-    removeBook: {
-      type: Function,
+    async get() {
+      this.isLoading = true;
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      this.isLoading = false;
+      this.getBooks(JSON.parse(localStorage.getItem("listBook")));
     },
-    changeRouter: {
-      type: Function,
-    },
-    isLoading: {
-      type: Boolean,
-    },
+  },
+  created() {
+    this.get();
   },
 };
 </script>
