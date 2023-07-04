@@ -62,12 +62,12 @@ export default {
     },
   },
   created() {
-    this.getDetail(useRoute().params.idBook);
+    this.getDetail(this?.$route?.params.idBook);
   },
 };
 </script>
 
-<style scoped>
+<style>
 h2 {
 }
 </style>
