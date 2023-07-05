@@ -97,7 +97,7 @@ export default {
         } else {
           this.editBook(data);
         }
-        useRouter().push({ path: "/book" });
+        this.$router?.push({ path: "/book" });
       }
       this.isSubmit = true;
     },
@@ -109,7 +109,7 @@ export default {
     },
   },
   created() {
-    if (this.actions === "edit") this.getDetail(useRoute().params.idBook);
+    if (this.actions === "edit") this.getDetail(this?.$route?.params.idBook);
   },
   beforeUpdate() {
     if (this.isSubmit) {
